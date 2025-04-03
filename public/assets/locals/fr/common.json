@@ -33,7 +33,14 @@
     "general": "Général",
     "length": "Longueur",
     "nameDescription": "Nom / Description",
-    "properties": "Propriétés"
+    "properties": "Propriétés",
+    "reload": "Recharge",
+    "attribute": "Attribut",
+    "category": "Catégorie",
+    "color": "Couleur",
+    "role": "Rôle",
+    "save": "Enregistrer",
+    "type": "Type"
   },
   "hotkey": {
     "focusInscription": "Fokus Inscription ({{hotkey}})",

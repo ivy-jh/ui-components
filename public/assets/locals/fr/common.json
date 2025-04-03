@@ -40,7 +40,8 @@
     "color": "Couleur",
     "role": "Rôle",
     "save": "Enregistrer",
-    "type": "Type"
+    "type": "Type",
+    "mapping": "Mapping"
   },
   "hotkey": {
     "focusInscription": "Fokus Inscription ({{hotkey}})",

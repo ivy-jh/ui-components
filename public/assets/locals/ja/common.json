@@ -33,7 +33,14 @@
     "general": "一般",
     "length": "長さ",
     "nameDescription": "名前 / 説明",
-    "properties": "プロパティ"
+    "properties": "プロパティ",
+    "reload": "再読み込み",
+    "attribute": "属性情報",
+    "category": "カテゴリー",
+    "color": "カラー",
+    "role": "ロール",
+    "save": "保存",
+    "type": "種類"
   },
   "hotkey": {
     "focusInscription": "入力欄にフォーカス ({{hotkey}})",

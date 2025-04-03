@@ -1,0 +1,43 @@
+{
+  "private": true,
+  "name": "parent",
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "volta": {
+    "node": "22.11.0"
+  },
+  "scripts": {
+    "ci": "npm install && npm run generate && npm run package && npm run type && (npm run lint:ci || true) && npm run test:ci",
+    "generate": "npm run generate --workspace=@axonivy/ui-icons",
+    "build": "lerna run build",
+    "package": "lerna run package",
+    "clean": "lerna run clean",
+    "type": "lerna run type",
+    "lint": "eslint",
+    "lint:ci": "eslint -o eslint.xml -f checkstyle",
+    "lint:fix": "eslint --fix",
+    "lint:inspect": "eslint --inspect-config",
+    "dev": "npm run dev --workspace=@axonivy/ui-components",
+    "test": "vitest test",
+    "test:ci": "vitest test --watch=false --reporter=default --reporter=junit --outputFile=report.xml",
+    "publish:next": "lerna publish --exact --canary --preid next --pre-dist-tag next --no-git-tag-version --no-push --ignore-scripts --yes"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "lerna": "^8.1.9",
+    "rimraf": "^6.0.1",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "typescript": "^5.7.3",
+    "typescript-cp": "^0.1.9",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.5.0",
+    "vitest": "^3.0.2"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "dev-packages/*"
+    ]
+  }
+}

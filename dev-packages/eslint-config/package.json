@@ -1,0 +1,30 @@
+{
+  "name": "@axonivy/eslint-config",
+  "version": "13.1.0-next",
+  "private": false,
+  "description": "Shared ESLint configuration for Axon Ivy projects",
+  "license": "(EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0)",
+  "author": "Axon Ivy AG",
+  "homepage": "https://developer.axonivy.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axonivy/ui-components"
+  },
+  "type": "module",
+  "main": "index.mjs",
+  "dependencies": {
+    "@eslint/js": "^9.22.0",
+    "@tanstack/eslint-plugin-query": "^5.68.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "eslint": "^9.22.0",
+    "eslint-formatter-checkstyle": "^8.40.0",
+    "eslint-plugin-i18next": "^6.1.1",
+    "eslint-plugin-playwright": "^2.2.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-3229e95-20250315",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-testing-library": "^7.1.1",
+    "typescript-eslint": "^8.26.1"
+  }
+}

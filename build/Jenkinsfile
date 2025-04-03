@@ -1,0 +1,68 @@
+pipeline {
+  agent any
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '5'))
+  }
+
+  triggers {
+    cron '@midnight'
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        script {
+          catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+            docker.build('node', '-f build/Dockerfile.node .').inside {
+              sh 'npm run ci && npm run build:storybook --workspace=@axonivy/ui-components'
+            }
+          }
+          archiveArtifacts artifacts: 'packages/**/src-gen/**', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'packages/**/storybook-static/**', allowEmptyArchive: true
+          currentBuild.description = "<a href=${BUILD_URL}artifact/packages/icons/src-gen/ivy-icons.html>&raquo; Icons</a><br>" + 
+            "<a href=${BUILD_URL}artifact/packages/components/storybook-static/index.html>&raquo; Components</a>"
+
+          withChecks('ESLint') {
+            recordIssues enabledForFailure: true, publishAllIssues: true, aggregatingResults: true, tools: [esLint(pattern: 'eslint.xml', skipSymbolicLinks: true)], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+          }
+          withChecks('Tests') {
+            junit testDataPublishers: [[$class: 'StabilityTestDataPublisher']], testResults: 'report.xml'
+          }
+        }
+      }
+    }
+
+    stage('Publish next') {
+      when {
+        expression { isReleasingBranch() && currentBuild.changeSets.size() > 0 }
+      }
+      steps {
+        script {
+          docker.build('node', '-f build/Dockerfile.node .').inside {
+            sh 'npm run build'
+            sh 'git checkout .'
+            withCredentials([string(credentialsId: 'npmjs-registry.ivyteam.ch-auth-token', variable: 'NPM_AUTH_TOKEN')]) {
+              sh 'npm set "//npmjs-registry.ivyteam.ch/:_authToken = $NPM_AUTH_TOKEN"'
+              sh 'npm run publish:next'
+            }
+          }
+        }
+      }
+    }
+
+    stage('Maven deploy') {
+      when {
+        expression { isReleasingBranch() }
+      }
+      steps {
+        script {
+          docker.build('maven-build', '-f build/Dockerfile.maven .').inside {
+            maven cmd: '-ntp -f packages/icons deploy -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+          }
+          archiveArtifacts 'packages/icons/target/ui-icons-*.zip'
+        }
+      }
+    }
+  }
+}
